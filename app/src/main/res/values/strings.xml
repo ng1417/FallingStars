@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Catch the Falling Shapes</string>
+    <string name="score_label">Score: %1$d Total: %2$d</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="reset">Reset</string>
+
+</resources>
