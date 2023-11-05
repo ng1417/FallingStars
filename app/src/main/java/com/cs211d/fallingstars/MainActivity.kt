@@ -85,7 +85,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun spawnFallingShape() {
         val fallingShape = ImageView(this)
-        fallingShape.setImageResource(R.drawable.circle)
+//        fallingShape.setImageResource(R.drawable.circle)
+        fallingShape.setImageResource(R.drawable.triangle)
         fallingShape.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
