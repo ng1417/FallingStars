@@ -1,12 +1,9 @@
 package com.cs211d.fallingstars
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
-import android.graphics.Color
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.animation.LinearInterpolator
+import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -78,12 +75,35 @@ class MainActivity : AppCompatActivity() {
         )
 
         /* YOUR STEP 2 CODE HERE */
+        // 2A
+        val color: Int = Random.nextInt()
+        fallingShape.setColorFilter(color)
 
         gameSpace.addView(fallingShape)
 
+        // 2B
+        fallingShape.setOnTouchListener(object : View.OnTouchListener {
+            @SuppressLint("ClickableViewAccessibility")
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+                when (event!!.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        score += 1
+                        scoreTextView.text = getString(R.string.score_label, score, total)
+                        gameSpace.removeAllViews()
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        //
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        //
+                    }
+                }
+                return true
+            }
+        })
+
         /* YOUR STEP 3 CODE HERE */
-
-
 
     }
 
