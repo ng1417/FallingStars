@@ -1,9 +1,13 @@
 package com.cs211d.fallingstars
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.BounceInterpolator
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -76,7 +80,8 @@ class MainActivity : AppCompatActivity() {
 
         /* YOUR STEP 2 CODE HERE */
         // 2A
-        val color: Int = Random.nextInt()
+        val random = Random.Default
+        val color: Int = random.nextInt()
         fallingShape.setColorFilter(color)
 
         gameSpace.addView(fallingShape)
@@ -104,6 +109,39 @@ class MainActivity : AppCompatActivity() {
         })
 
         /* YOUR STEP 3 CODE HERE */
+
+        // 3A
+        val maxTranslationX = gameSpace.width - fallingShape.drawable.intrinsicWidth
+        val translationX = random.nextInt(maxTranslationX).toFloat()
+        val translateX = ObjectAnimator.ofFloat(fallingShape, View.TRANSLATION_X, translationX, translationX)
+
+        // 3B
+        val maxTranslationY = gameSpace.height.toFloat()
+        val translateY = ObjectAnimator.ofFloat(fallingShape, View.TRANSLATION_Y, maxTranslationY)
+        translateY.duration = 4000
+        translateY.interpolator = BounceInterpolator()
+
+
+        // 3C
+        val animSet = AnimatorSet()
+        animSet.play(translateX).with(translateY)
+        //animSet.play(growRocketX).after(squatRocketY).with(__B__)
+        //animSet.play(__C__).after(growRocketY)
+        animSet.start()
+
+        // 3D
+        /*
+        animSet.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
+                total += 1
+                scoreTextView.text = getString(R.string.score_label, score, total)
+                gameSpace.removeAllViews()
+            }
+        })
+
+         */
 
     }
 
