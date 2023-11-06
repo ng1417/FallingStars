@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private var isGameRunning = false
     private var spawnIntervalLow = 500L
     private var spawnIntervalHigh = 3000L
-    private lateinit var fallDot: ObjectAnimator
 
     private var timer: Timer? = null
 
@@ -58,13 +57,7 @@ class MainActivity : AppCompatActivity() {
         scoreTextView.text = getString(R.string.score_label, score, total)
 
         startButton.setOnClickListener { startGame() }
-        stopButton.setOnClickListener {
-            val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putInt("highScore", score)
-            editor.apply()
-            stopGame()
-        }
+        stopButton.setOnClickListener { stopGame() }
         resetButton.setOnClickListener { resetGame() }
     }
 
@@ -150,12 +143,10 @@ class MainActivity : AppCompatActivity() {
         val y = gameSpace.height.toFloat()
         val randomDuration = random.nextInt(5000 - 1000) + 1000
 
-        fallDot = ObjectAnimator.ofFloat(fallingShape, "translationY", 0f, y)
+        val fallDot = ObjectAnimator.ofFloat(fallingShape, "translationY", 0f, y)
         fallDot.interpolator = LinearInterpolator()
         fallDot.duration = randomDuration.toLong()
         fallDot.start()
-        fallDot.resume()
-
 
         total += 1
 
@@ -177,11 +168,11 @@ class MainActivity : AppCompatActivity() {
         stopButton.isEnabled = false
 
         scoreTextView.text = getString(R.string.score_label, score, total)
-        fallDot.pause()
+
 
         val pauseDuration = abs(startTime - stopTime)
 
-        /*for (i in 0 until gameSpace.childCount) {
+        for (i in 0 until gameSpace.childCount) {
             val childView = gameSpace.getChildAt(i)
             // Add a listener to each child view
             ObjectAnimator.ofFloat(childView, View.Y, childView.y, childView.y)
@@ -189,7 +180,7 @@ class MainActivity : AppCompatActivity() {
                     duration = pauseDuration // Set the pause duration
                     start()
                 }
-        }*/
+        }
 
 
     }
