@@ -11,9 +11,10 @@
         android:layout_width="275dp"
         android:layout_height="319dp"
         android:gravity="center"
-        android:text="Click on the falling shapes before they hit the bottom! \n \n Be quick, some move faster than others!"
+        android:text="@string/help_text"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="153dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
