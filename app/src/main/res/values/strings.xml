@@ -4,4 +4,6 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="reset">Reset</string>
+    <string name="help_text">Click on the falling shapes before they hit the bottom! \n \n Be quick, some move faster than others!</string>
+    <string name="help_title">Help</string>
 </resources>

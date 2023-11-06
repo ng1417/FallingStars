@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     private var isGameRunning = false
     private var spawnIntervalLow = 500L
     private var spawnIntervalHigh = 3000L
-    //private lateinit var fallDot: ObjectAnimator
     private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +79,7 @@ class MainActivity : AppCompatActivity() {
         if (!isGameRunning) {
             startTime = System.currentTimeMillis()
             isGameRunning = true
-            //score = 0
-            //total = 0
-            scoreTextView.text = getString(R.string.score_label, score, total)
+
             startButton.isEnabled = false
             stopButton.isEnabled = true
 
