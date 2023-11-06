@@ -4,9 +4,12 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
@@ -56,6 +59,22 @@ class MainActivity : AppCompatActivity() {
         stopButton.setOnClickListener { stopGame() }
         resetButton.setOnClickListener { resetGame() }
     }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.falling_stars_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.help -> {
+                // Launch the HelpActivity
+                val intent = Intent(this, Help::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 
     private fun startGame() {
         if (!isGameRunning) {
@@ -85,8 +104,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun spawnFallingShape() {
         val fallingShape = ImageView(this)
-//        fallingShape.setImageResource(R.drawable.circle)
-        fallingShape.setImageResource(R.drawable.triangle)
+        fallingShape.setImageResource(R.drawable.circle)
+        //fallingShape.setImageResource(R.drawable.triangle)
         fallingShape.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
@@ -100,18 +119,16 @@ class MainActivity : AppCompatActivity() {
 
         fallingShape.setColorFilter(Color.rgb(red, green, blue))
 
-        fallingShape.setOnTouchListener(object: View.OnTouchListener {
-            override fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
-                when (motionEvent.action){
-                    MotionEvent.ACTION_DOWN -> {
-                        gameSpace.removeView(fallingShape)
-                        score += 1
-                        scoreTextView.text = getString(R.string.score_label, score, total)
-                    }
+        fallingShape.setOnTouchListener { v, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    gameSpace.removeView(fallingShape)
+                    score += 1
+                    scoreTextView.text = getString(R.string.score_label, score, total)
                 }
-                return true
             }
-        })
+            true
+        }
 
         gameSpace.addView(fallingShape)
 
