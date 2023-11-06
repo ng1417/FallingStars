@@ -3,11 +3,9 @@ package com.cs211d.fallingstars
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private var isGameRunning = false
     private var spawnIntervalLow = 500L
     private var spawnIntervalHigh = 3000L
-
+    //private lateinit var fallDot: ObjectAnimator
     private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,9 +141,10 @@ class MainActivity : AppCompatActivity() {
         val y = gameSpace.height.toFloat()
         val randomDuration = random.nextInt(5000 - 1000) + 1000
 
-        val fallDot = ObjectAnimator.ofFloat(fallingShape, "translationY", 0f, y)
+        var fallDot = ObjectAnimator.ofFloat(fallingShape, "translationY", 0f, y)
         fallDot.interpolator = LinearInterpolator()
         fallDot.duration = randomDuration.toLong()
+        fallDot.resume()
         fallDot.start()
 
         total += 1
@@ -169,7 +168,6 @@ class MainActivity : AppCompatActivity() {
 
         scoreTextView.text = getString(R.string.score_label, score, total)
 
-
         val pauseDuration = abs(startTime - stopTime)
 
         for (i in 0 until gameSpace.childCount) {
@@ -181,13 +179,12 @@ class MainActivity : AppCompatActivity() {
                     start()
                 }
         }
-
-
     }
 
     private fun resetGame() {
         isGameRunning = false
         startButton.isEnabled = true
+        stopButton.isEnabled = true
         score = 0
         total = 0
         scoreTextView.text = getString(R.string.score_label, score, total)
