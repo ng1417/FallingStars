@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -18,9 +19,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
-import androidx.core.view.size
-import java.sql.Time
 import java.util.*
 import kotlin.random.Random
 import kotlin.concurrent.timerTask
@@ -32,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stopButton: Button
     private lateinit var resetButton: Button
     private lateinit var scoreTextView: TextView
-
     private var startTime: Long = 0
     private var stopTime: Long = 0
 
@@ -46,6 +43,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState !=null) {
+            score = savedInstanceState.getInt("currentScore")
+            total = savedInstanceState.getInt("currentTotal")
+        }
         setContentView(R.layout.activity_main)
 
         gameSpace = findViewById(R.id.game_space)
@@ -56,9 +57,16 @@ class MainActivity : AppCompatActivity() {
         scoreTextView.text = getString(R.string.score_label, score, total)
 
         startButton.setOnClickListener { startGame() }
-        stopButton.setOnClickListener { stopGame() }
+        stopButton.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt("highScore", score)
+            editor.apply()
+            stopGame()
+        }
         resetButton.setOnClickListener { resetGame() }
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.falling_stars_menu, menu)
         return true
@@ -80,8 +88,8 @@ class MainActivity : AppCompatActivity() {
         if (!isGameRunning) {
             startTime = System.currentTimeMillis()
             isGameRunning = true
-            score = 0
-            total = 0
+            //score = 0
+            //total = 0
             scoreTextView.text = getString(R.string.score_label, score, total)
             startButton.isEnabled = false
             stopButton.isEnabled = true
@@ -167,6 +175,7 @@ class MainActivity : AppCompatActivity() {
 
         scoreTextView.text = getString(R.string.score_label, score, total)
 
+
         val pauseDuration = abs(startTime - stopTime)
 
         for (i in 0 until gameSpace.childCount) {
@@ -178,6 +187,8 @@ class MainActivity : AppCompatActivity() {
                     start()
                 }
         }
+
+
     }
 
     private fun resetGame() {
@@ -187,5 +198,11 @@ class MainActivity : AppCompatActivity() {
         total = 0
         scoreTextView.text = getString(R.string.score_label, score, total)
         gameSpace.removeAllViews()
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putInt("currentScore", score)
+        savedInstanceState.putInt("currentTotal", total)
     }
 }
